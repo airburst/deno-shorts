@@ -14,6 +14,8 @@ export const compare = (op: CompareOperator) => (a: string, b: string) => {
       return a >= b;
     case "in":
       return a.includes(b);
+    case "nin":
+      return !a.includes(b);
     default:
       throw new Error(`Unsupported operator: ${op}`);
   }
@@ -28,16 +30,3 @@ export const getCompareFunction = (operator: CompareOperator) => {
   }
   return compareFunctions.get(operator);
 };
-
-// console.log(compare("eq")("a", "a") === true);
-// console.log(compare("eq")("a", "b") === false);
-// console.log(compare("lt")("a", "b") === true);
-// console.log(compare("lt")("b", "a") === false);
-// console.log(compare("lte")("a", "b") === true);
-// console.log(compare("lte")("a", "a") === true);
-// console.log(compare("gt")("b", "a") === true);
-// console.log(compare("gt")("a", "b") === false);
-// console.log(compare("gte")("b", "a") === true);
-// console.log(compare("gte")("a", "a") === true);
-// console.log(compare("in")("abc", "b") === true);
-// console.log(compare("in")("abc", "d") === false);

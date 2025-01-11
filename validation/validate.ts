@@ -1,16 +1,15 @@
 import {getCompareFunction} from "./compare.ts";
-import {Rule, RuleSet} from "./types.ts";
+import {isRule, Rule, RuleSet} from "./types.ts";
 
 // Pre-generate rule evaluation functions
 const compileRule = (rule: Rule) => {
   const compareFunc = getCompareFunction(rule.operator);
 
   return (answers: Record<string, string>) => {
-    // Derive value to compare against, from
-    // another answer, or a literal
+    // Derive value to compare against
     const actualValue = rule.valueSource
-      ? answers[rule.valueSource]
-      : rule.value;
+      ? answers[rule.valueSource] // from another answer
+      : rule.value; // from a literal value
 
     return compareFunc(answers[rule.id], actualValue);
   };
@@ -18,7 +17,12 @@ const compileRule = (rule: Rule) => {
 
 // Pre-generate rule set (combination) evaluation functions
 const compileRuleSet = (ruleSet: RuleSet) => {
-  const compiledRules = ruleSet.rules.map(compileRule);
+  const compiledRules = ruleSet.rules.map((rule) => {
+    if (isRule(rule)) {
+      return compileRule(rule);
+    }
+    return compileRuleSet(rule);
+  });
 
   return (answers: Record<string, string>) => {
     const valid =

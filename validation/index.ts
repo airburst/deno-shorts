@@ -34,5 +34,67 @@ const badAnswers = {
   contents_cover_selected: "yes",
 };
 
-console.log(validate("public_liability", goodAnswers));
-console.log(validate("public_liability", badAnswers));
+// console.log(validate("public_liability", goodAnswers));
+// console.log(validate("public_liability", badAnswers));
+
+// Simple
+// const valSimple: RuleSet[] = [
+//   {
+//     id: "first-name",
+//     combinator: "and",
+//     rules: [
+//       {
+//         id: "firstName",
+//         operator: "eq",
+//         value: "Mark",
+//       },
+//     ],
+//     message: "Name is NOT Mark",
+//   },
+// ];
+
+// const validateSimple = createValidator(valSimple);
+// console.log(
+//   validateSimple("first-name", {
+//     firstName: "John",
+//   }),
+// );
+
+const nestedValidations: RuleSet[] = [
+  {
+    id: "work-age",
+    combinator: "and",
+    rules: [
+      {
+        id: "firstName",
+        operator: "eq",
+        value: "Mark",
+      },
+      {
+        id: "nested",
+        combinator: "or",
+        rules: [
+          {
+            id: "age",
+            operator: "gt",
+            value: "18",
+          },
+          {
+            id: "age",
+            operator: "lt",
+            value: "67",
+          },
+        ],
+      },
+    ],
+    message: "Your name has to be Mark and you must be working age (18-67)",
+  },
+];
+
+const validateNested = createValidator(nestedValidations);
+console.log(
+  validateNested("work-age", {
+    firstName: "Mark",
+    age: "17",
+  }),
+);
