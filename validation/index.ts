@@ -1,7 +1,7 @@
 import {RuleSet} from "./types.ts";
 import {createValidator} from "./validate.ts";
 
-console.log("=== Simple ===\n");
+console.log("\n=== Simple ===\n");
 
 // Simple
 const valSimple: RuleSet[] = [
@@ -22,6 +22,32 @@ console.log(
 console.log(
   validateSimple("firstName", {
     firstName: "Mark",
+  }),
+);
+
+console.log("\n=== Simple with valueSource ===\n");
+
+// Simple
+const valSimpleFrom: RuleSet[] = [
+  {
+    id: "firstName",
+    operator: "eq",
+    valueSource: "anotherName",
+    message: "firstName is NOT same as anotherName",
+  },
+];
+
+const validateSimpleFrom = createValidator(valSimpleFrom);
+console.log(
+  validateSimpleFrom("firstName", {
+    firstName: "John",
+    anotherName: "Bob",
+  }),
+);
+console.log(
+  validateSimpleFrom("firstName", {
+    firstName: "Bob",
+    anotherName: "Bob",
   }),
 );
 
