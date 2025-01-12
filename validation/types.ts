@@ -10,13 +10,10 @@ export type Rule = {
 export type Combinator = {
   id: string;
   combinator: "and" | "or";
-  rules: (Rule | RuleSet)[];
+  rules: (Rule | Combinator)[];
 };
 
-export type RuleSet = {
-  id: string;
-  combinator: "and" | "or";
-  rules: (Rule | Combinator)[];
+export type RuleSet = (Rule | Combinator) & {
   message?: string;
 };
 
@@ -27,11 +24,17 @@ export type RuleOutcome = {
 
 // Type helpers
 export const isRule = (rule: Rule | Combinator | RuleSet): rule is Rule => {
-  return "operator" in rule;
+  return "operator" in rule && !("rules" in rule);
 };
 
 export const isCombinator = (
   rule: Rule | Combinator | RuleSet,
 ): rule is Combinator => {
-  return "combinator" in rule && !("message" in rule);
+  return "combinator" in rule && "rules" in rule;
+};
+
+export const isRuleSet = (
+  rule: Rule | Combinator | RuleSet,
+): rule is RuleSet => {
+  return "message" in rule;
 };
