@@ -27,12 +27,6 @@ export const isRule = (rule: Rule | Combinator | RuleSet): rule is Rule => {
   return "operator" in rule && !("rules" in rule);
 };
 
-export const isCombinator = (
-  rule: Rule | Combinator | RuleSet,
-): rule is Combinator => {
-  return "combinator" in rule && "rules" in rule;
-};
-
 export const isRuleSet = (
   rule: Rule | Combinator | RuleSet,
 ): rule is RuleSet => {

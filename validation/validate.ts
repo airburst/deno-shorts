@@ -46,10 +46,7 @@ const compileCombinator = (combinator: Combinator) => {
 
 // Pre-generate rule set (combination) evaluation functions
 const compileRuleSet = (ruleSet: RuleSet) => {
-  if (isRule(ruleSet)) {
-    return compileRule(ruleSet);
-  }
-  return compileCombinator(ruleSet);
+  return isRule(ruleSet) ? compileRule(ruleSet) : compileCombinator(ruleSet);
 };
 
 // Factory function to create a validator from rules data
